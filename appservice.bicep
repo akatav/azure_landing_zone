@@ -17,3 +17,22 @@ resource webApp 'Microsoft.Web/sites@2022-09-01' = {
     virtualNetworkSubnetId: subnetId // Connects the app to the network we built
   }
 }
+
+// Add this after your webApp resource
+resource scalingRules 'Microsoft.Insights/autoscaleSettings@2022-10-01' = {
+  name: '${appName}-autoscale'
+  location: location
+  properties: {
+    targetResourceUri: appPlan.id
+    enabled: true
+    profiles: [
+      {
+        name: 'Default'
+        capacity: { minimum: '1', maximum: '3', default: '1' }
+        rules: [
+          // Scaling logic would go here
+        ]
+      }
+    ]
+  }
+}

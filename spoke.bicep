@@ -22,3 +22,5 @@ resource spokeToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowForwardedTraffic: true
   }
 }
+// This exports the ID of the first subnet so main.bicep can see it
+output subnetId string = spokeVnet.properties.subnets[0].id
