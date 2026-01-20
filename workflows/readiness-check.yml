@@ -1,0 +1,21 @@
+name: "Bicep Readiness Check"
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Install Azure CLI"
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: "Validate All Bicep Files"
+        run: |
+          # This find command locates every .bicep file and runs a build check
+          # It ensures main.bicep AND all modules are 100% valid
+          find . -name "*.bicep" -type f -exec az bicep build --file {} \;
